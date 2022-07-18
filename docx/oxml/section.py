@@ -136,15 +136,20 @@ class CT_SectPr(BaseOxmlElement):
         pgMar = self.get_or_add_pgMar()
         pgMar.footer = value
 
-    def get_footerReference(self, type_):
+    def get_footerReference(self, type_:None):
         """Return footerReference element of *type_* or None if not present."""
-        path = "./w:footerReference[@w:type='%s']" % WD_HEADER_FOOTER.to_xml(type_)
+        
+        if type_:
+            path = "./w:footerReference[@w:type='%s']" % WD_HEADER_FOOTER.to_xml(type_)
+        else:
+            path = "./w:footerReference" 
+        
         footerReferences = self.xpath(path)
         if not footerReferences:
             return None
         return footerReferences[0]
 
-    def get_headerReference(self, type_):
+    def get_headerReference(self, type_:None):
         """Return headerReference element of *type_* or None if not present."""
         matching_headerReferences = self.xpath(
             "./w:headerReference[@w:type='%s']" % WD_HEADER_FOOTER.to_xml(type_)
